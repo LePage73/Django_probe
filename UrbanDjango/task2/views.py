@@ -5,8 +5,8 @@ from django.views.generic import TemplateView
 
 
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'second_task/index.html')
 def func_performance(request):
-    return render(request, 'template_func.html')
+    return render(request, 'second_task/template_func.html')
 class Class_performance(TemplateView):
-    template_name = 'template_class.html'
+    template_name = 'second_task/template_class.html'
