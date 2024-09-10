@@ -17,9 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from task2.views import func_performance, Class_performance, index
+from task3.views import Trbl_win, Trbl_apps, Trbl_index
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),
     path('func/', func_performance),
     path('class/', Class_performance.as_view()),
+    path('troubleshooting/', Trbl_index.as_view()),
+    path('troubleshooting/windows', Trbl_win.as_view()),
+    path('troubleshooting/apps', Trbl_apps.as_view()),
 ]

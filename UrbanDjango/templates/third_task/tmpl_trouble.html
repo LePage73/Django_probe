@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ my_context.title }}</title>
+</head>
+<body>
+<h1>{{ my_context.title }}</h1>
+<ul>
+    <h3>
+    {% for  str_ in my_context.menu %}
+    <li> {{ str_.menu }} <button>{{ str_.button }}</button></li>
+    {% endfor %}
+    </h3>
+    <li><button onclick="document.location='/troubleshooting'">На главную</button></li>
+</ul>
+
+</body>
+</html>

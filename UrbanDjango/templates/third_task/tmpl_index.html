@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ my_context.title }}</title>
+</head>
+<body>
+<h1>{{ my_context.title }}</h1>
+<ul>
+    <h3>
+    {% for str_ in my_context.menu %}
+    <li><a href={{str_.href}}> {{str_.menu}} </a></li>
+    {% endfor %}
+   </h3>
+</ul>
+</body>
+</html>
