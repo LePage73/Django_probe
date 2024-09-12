@@ -20,6 +20,7 @@ from task2.views import func_performance, Class_performance, index
 
 # from task3.views import Trbl_win, Trbl_apps, Trbl_index # при проверке третьего задания расскомментируйте эту строку
 from task4.views import Trbl_win, Trbl_apps, Trbl_index # и закомментируйте эту
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),
