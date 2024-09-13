@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+</head>
+<body>
+<form  method="post">
+    {% csrf_token %}
+    <table align="center">
+    <tr><td>{{ form }}</td></tr>
+    <tr><td><input type="submit" value="Submit"></td></tr>
+    {% for str_ in error %}
+        <tr><td style="color:red">Ошибка: {{str_}} </td></tr>
+    {% endfor %}
+    </table>
+</form>
+
+</body>
+</html>

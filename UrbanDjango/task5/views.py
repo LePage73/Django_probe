@@ -1,50 +1,63 @@
-# from django.shortcuts import render # не нужна
-from django.views.generic import TemplateView
+from django.shortcuts import render
+from django.views.generic import TemplateView, View
+from django.http import HttpResponse
+from .forms import Reg_Forms
 
 # Create your views here.
-# учим класс добавлять свои переменные в контекст
-class Tmpl_trouble(TemplateView):
-    my_context: dict
-    def get_context_data(self,  *args, **kwargs,): # переопределим для враппинга своего контекста
-        context = super().get_context_data(**kwargs)
-        context['my_context'] = self.my_context
-        return context
 
-# подготовим меню и контент
-MAIN_TITLE = {'title': 'Главная страница Техподдержки'}
-MENU = {'menu': [{'menu': 'Главная', 'href': './'},
-                 {'menu': 'Windows', 'href': './windows'},
-                 {'menu': 'Приложение', 'href': './apps'}
-                 ]}
+TITLE_HTML = {'title' : 'Форма регистрации HTML'}
+TITLE_Django = {'title' : 'Форма регистрации Django'}
 
-WIN_TITLE = {'title': 'Проблема с Windows'}
-WIN_CONTENT_MENU = {'cntxt_menu': [
-    {'menu': 'Windows запускается только в "безопасном режиме"', 'button': 'Комплект драйверов'},
-    {'menu': 'При загрузке появляется "синий экран смерти"', 'button': 'Утилита диагностики'},
-    {'menu': 'При загрузке ничего не происходит - черный экран', 'button': 'Вызвать мастера'}
-]}
-APPS_TITLE = {'title': 'Проблема с приложением'}
-APPS_CONTENT_MENU = {'cntxt_menu': [
-    {'menu': 'Приложение не запускается - ничего не происходит ', 'button': 'Комплект драйверов'},
-    {'menu': 'Приложение зависает через некоторое время ', 'button': 'Утилита диагностики'},
-    {'menu': 'При запуске приложения "Синий экран смерти" ', 'button': 'Вызвать мастера'},
-    {'menu': 'Приложение вылетает с ошибкой "404" ', 'button': 'Проверить Интернет'}
-]}
+USER_LIST = ['vasily', 'serg63', 'urban', 'admin', 'olga', 'python', 'spring']
 
-# привяжем шаблоны к классам и подключим контекст
-class Trbl_index(Tmpl_trouble):
+class Sign_HTML(View):
+    my_context = {}
+    info = {}
+    template_name = ''
+    def get(self, request):
+        return render(request, self.template_name, self.my_context | self.info)
+    def post(self,request):
+        list_err = []
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+        age = request.POST.get('age')
+        if username.lower() in USER_LIST: list_err.append('Такой пользователь существует')
+        if password != confirm_password: list_err.append('Пароль и подверждение не совпадают')
+        if int(age) < 18: list_err.append('Вам должно быть больше 18 лет')
+        if len(list_err) == 0: return HttpResponse(f'Приветствуем, {username}!') # регистрация прошла удачно
+        self.info.clear()
+        self.info['error'] = list_err
+        return render(request, self.template_name, self.my_context | self.info) # Ошибка, опять выводим форму регистрации
+                                                                                # И передаем ей перечень ошибок
     pass
-Trbl_index.template_name = 'fourth_task/tmpl_index_DTL.html'
-Trbl_index.my_context = MENU | MAIN_TITLE  # добавляем свой контекст
+Sign_HTML.template_name = 'fifth_task/tmpl_HTML.html'
+Sign_HTML.my_context = TITLE_HTML    # добавляем свой контекст
 
-class Trbl_win(Tmpl_trouble):
+class Sign_Django(View):
+    my_context = {}
+    info = {}
+    template_name = ''
+    def get(self, request):
+        return render(request, self.template_name, self.my_context | self.info)
+    def post(self,request):
+        list_err = []
+        form = Reg_Forms(request.POST)
+        if form.is_valid():
+            if form.cleaned_data['username'].lower() in USER_LIST: list_err.append('Такой пользователь существует')
+            if form.cleaned_data['password'] != form.cleaned_data['confirm_password']: list_err.append(
+                'Пароль и подверждение не совпадают')
+            if int(form.cleaned_data['age']) < 18: list_err.append('Вам должно быть больше 18 лет')
+            if len(list_err) == 0: return HttpResponse(
+                f'Приветствуем, {form.cleaned_data['username']}!')  # регистрация прошла удачно
+        self.info.clear()
+        self.info['error'] = list_err
+        self.info['form'] = form
+        return render(request, self.template_name, self.my_context | self.info)
     pass
-Trbl_win.template_name = 'fourth_task/tmpl_trouble_DTL.html'
-Trbl_win.my_context = MENU | WIN_TITLE | WIN_CONTENT_MENU # добавляем свой контекст
+Sign_Django.template_name = 'fifth_task/tmpl_Django.html'
+Sign_Django.my_context = TITLE_Django # добавляем свой контекст
 
-class Trbl_apps(Tmpl_trouble):
-    pass
-Trbl_apps.template_name = 'fourth_task/tmpl_trouble_DTL.html'
-Trbl_apps.my_context = MENU | APPS_TITLE | APPS_CONTENT_MENU # добавляем свой контекст
+
 
 

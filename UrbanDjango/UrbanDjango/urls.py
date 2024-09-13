@@ -20,6 +20,7 @@ from task2.views import func_performance, Class_performance, index
 
 # from task3.views import Trbl_win, Trbl_apps, Trbl_index # при проверке третьего задания расскомментируйте эту строку
 from task4.views import Trbl_win, Trbl_apps, Trbl_index # и закомментируйте эту
+from task5.views import Sign_Django, Sign_HTML
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,4 +30,6 @@ urlpatterns = [
     path('troubleshooting/', Trbl_index.as_view()),
     path('troubleshooting/windows', Trbl_win.as_view()),
     path('troubleshooting/apps', Trbl_apps.as_view()),
+    path('SignHTML/', Sign_HTML.as_view()),
+    path('SignDjango/', Sign_Django.as_view()),
 ]

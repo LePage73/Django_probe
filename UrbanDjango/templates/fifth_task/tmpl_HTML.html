@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <form method="post" >
+        <table align="center">
+        {% csrf_token %}
+        <tr><td><label for="username"> Введите логин: </label></td>
+        <td><input type="text" id="username" name="username" maxlength="30" required></td>
+        </tr>
+        <tr><td><label for="password">Введите пароль: </label></td>
+        <td><input type="password" id="password" name="password" minlength="8" required></td>
+        </tr>
+        <tr><td><label for="confirm_password">Повторите пароль: </label></td>
+        <td><input type="password" id="confirm_password" name="confirm_password" minlength="8" required></td>
+        </tr>
+        <tr><td><label for="age"> Введите возраст: </label></td>
+        <td><input type="tetx" id="age" name="age" maxlength="3" required></td>
+        </tr>
+        <tr><td colspan="2"><button type="submit"> Зарегистрироваться </button><td>
+        </tr>
+        {% for str_ in error %}
+        <tr><td colspan="2" style="color:red">Ошибка: {{str_}} </td></tr>
+        {% endfor %}
+        </table>
+    </form>
+</body>
+</html>
